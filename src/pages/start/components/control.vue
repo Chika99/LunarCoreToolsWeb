@@ -99,13 +99,13 @@ const handleSubmit = () => {
     command: form.command
   };
 
-  axios.post('/api/command', data).then(res => {
+  axios.post(Url, data).then(res => {
     console.log(res);
     
     responseData.value = JSON.stringify(res.data, null, 2);
 
     if (res.data.retcode === 0) {
-      localStorage.setItem('address', '/api/command');
+      localStorage.setItem('address', Url);
       localStorage.setItem('uid', form.uid);
       localStorage.setItem('username', form.username);
       localStorage.setItem('password', form.password);

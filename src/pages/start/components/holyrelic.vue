@@ -150,9 +150,15 @@ const options3 = ref(holyrelicx1)
 const message = Message
 
 function copyvalue() {
-  copy(value.value)
-  if (isSupported) {
-    message.success(`已复制${value.value}`)
+  if (navigator.clipboard) {
+    copy(value.value)
+  } else {
+    const input = document.createElement('input');
+    input.setAttribute('value', value.value);
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
   }
 }
 

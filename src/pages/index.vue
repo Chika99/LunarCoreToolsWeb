@@ -80,7 +80,7 @@ const fetchPageViews = async () => {
 
 
 onMounted(() => {
-  fetchPageViews();
+  // fetchPageViews();
 
   
   const browserLanguage = navigator.language.toLowerCase();
@@ -123,7 +123,7 @@ const fetchLatestVersion = async () => {
 };
 
 onMounted(() => {
-  fetchLatestVersion();
+  // fetchLatestVersion();
 });
 
 const closeAlert = () => {

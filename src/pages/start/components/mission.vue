@@ -67,35 +67,41 @@
   })
   
   const execute = () => {
-    
-    const address = localStorage.getItem('address')
-    const uid = localStorage.getItem('uid')
-    const password = localStorage.getItem('password')
+
+    const address = localStorage.getItem('address');
+    const uid = localStorage.getItem('uid');
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
   
-    if (!address || !uid || !password) {
+    if (!address || !uid || !username || !password) {
       
       Message.info('用户未登录，请重试')
     } else {
       
       const command = `${value3.value} ${value2.value}`
-      const data = { uid, password, command }
-  
-      
+      const data = {
+        playerId: uid,
+        username: username,
+        password: password,
+        command: command
+      };
+
+
       axios.post(address, data)
-        .then(response => {
-          
-          if (response.data.retcode === 200) {
-            message.success('执行成功！')
-          } else {
+          .then(response => {
+
+            if (response.data.retcode === 0) {
+              message.success('执行成功！')
+            } else {
+              message.error('执行失败！' + response.data.message)
+            }
+            console.log(response)
+          })
+          .catch(error => {
+
             message.error('执行失败！')
-          }
-          console.log(response)
-        })
-        .catch(error => {
-          
-          message.error('执行失败！')
-          console.error(error)
-        })
+            console.error(error)
+          });
     }
   }
   

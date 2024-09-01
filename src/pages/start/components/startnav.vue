@@ -27,6 +27,7 @@ const { t, locale } = useI18n()
 
 const datav = reactive([
   { name: 'frequently', path: "/start/commuse" },
+  { name: 'RemoteControl', path: "/start/control" },
   { name: 'Customrelics', path: "/start/holyrelic" },
   { name: 'Graduationrelics', path: "/start/holyrelic2" },
   { name: 'Monsterspawning', path: "/start/monster" },
@@ -37,7 +38,7 @@ const datav = reactive([
   { name: 'food', path: "/start/food" },
   { name: 'avatar', path: "/start/page1" },
   { name: 'scene', path: "/start/scene" },
-  { name: 'RemoteControl', path: "/start/control" }, // Modified key to match your translation
+  // Modified key to match your translation
   { name: 'about', path: "/start/about" },
   { name: 'suggest', path: "/start/suggest" },
 

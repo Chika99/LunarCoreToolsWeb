@@ -35,7 +35,7 @@ const options: I18nOptions = {
         avatar:"头像",
         scene:"场景",
         about:"关于",
-        remotecontrol:"远程",
+        remotecontrol:"连接游戏服务器",
         suggest:"推荐"
 
 

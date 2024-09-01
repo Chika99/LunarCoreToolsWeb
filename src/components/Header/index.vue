@@ -6,14 +6,10 @@
     >
       <template #extra>
         <div class="extra-container">
-          <span :class="latencyClass">{{ latency }} ms</span>
+          <span :class="latencyClass">{{ latency }} ms </span>
 
-          <a href="https://github.com/lctoolsweb/LunarCoreTools/" target="_blank" rel="noopener noreferrer" class="github-link">
+          <a href="https://github.com/lctoolsweb/LunarCoreTools/" target="_blank" rel="noopener noreferrer" class="github-link" :style="{marginLeft: '5px'}">
             <icon-github :class="{ 'dark-icon': theme === 'dark' }" class="icon" />
-          </a>
-
-          <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=J54m8XB3Ig8VJ41ICO8KW029aSz4fFB-&authKey=tq9%2BSsg2M30Jy1v9OwJEa%2B%2FmarnH2AslQYQsv24BkkeqY39%2FtlpZsrIkqO01SScg&noverify=0&group_code=124750952" target="_blank" rel="noopener noreferrer" class="qq-link">
-            <icon-qq-circle-fill :class="{ 'dark-icon': theme === 'dark' }" class="icon" />
           </a>
 
           <button @click="toggleTheme" class="theme-toggle">
@@ -72,15 +68,19 @@ export default {
     },
     fetchLatency() {
       const start = Date.now();
-      fetch(`${import.meta.env.VITE_DANHENG_DISPATCH_SERVER}/muip/auth_admin`, {
+      const address = localStorage.getItem('address');
+      const uid = localStorage.getItem('uid');
+      const username = localStorage.getItem('username');
+      const password = localStorage.getItem('password');
+
+      if (!address || !uid || !username || !password) {
+        return;
+      }
+      fetch(address, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          admin_key: import.meta.env.VITE_DANHENG_ADMIN_KEY,
-          key_type: 'pem'
-        })
+        }
       })
       .then(response => response.json())
       .then(() => {

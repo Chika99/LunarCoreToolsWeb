@@ -2,7 +2,7 @@
   <div class="form-container">
     <!-- 新加入的警告提示 -->
     <a-alert type="warning">
-      因倒卖🐕与一些人的跳脸行为，远程功能已经停止公开，如果你仍然想要使用远程功能，请通过某些途径进行验证。
+      登录状态：{{ loginStatus }}
     </a-alert>
 
     <!-- 原有的内容 -->
@@ -18,15 +18,18 @@
       <a-form-item field="uid" label="uid">
         <a-input v-model="form.uid" placeholder="请输入玩家UID..." />
       </a-form-item>
+      <a-form-item field="username" label="username">
+        <a-input v-model="form.username" placeholder="请输入登录账号" />
+      </a-form-item>
       <a-form-item field="password" label="密码">
-        <a-input-password v-model="form.password" placeholder="请输入密码" allow-clear />
+        <a-input-password v-model="form.password" placeholder="请输入登录密码" allow-clear />
       </a-form-item>
       <a-form-item field="command" label="command">
         <a-input v-model="form.command" placeholder="请输入命令..." />
       </a-form-item>
       <a-form-item>
         <a-space>
-          <a-button type="primary" shape="round" size="large" html-type="submit">提交</a-button>
+          <a-button type="primary" shape="round" size="large" html-type="submit" @click="handleSubmit">连接</a-button>
           <a-button type="primary" shape="round" size="large" html-type="reset" @click="handleReset">重置</a-button>
         </a-space>
       </a-form-item>
@@ -43,11 +46,25 @@ import { reactive, ref } from 'vue'
 import { Message } from '@arco-design/web-vue'
 import axios from 'axios';
 
+const loginStatus = ref('未登录');
+
+onMounted(() =>{
+  const address = localStorage.getItem('address');
+  const uid = localStorage.getItem('uid');
+  const username = localStorage.getItem('username');
+  const password = localStorage.getItem('password');
+  if (!address || !uid || !username || !password) {
+    loginStatus.value = '未登录';
+  } else {
+    loginStatus.value = '已登录，若无法连接服务器可以尝试重置数据';
+  }
+})
 const form = reactive({
   ssl: "http://",
   ip: '',
-  path: "/submit",
+  path: "/command",
   uid: '',
+  username: '',
   password: '',
   command: ''
 });
@@ -55,12 +72,14 @@ const form = reactive({
 const handleReset = () => {
   localStorage.clear();
   form.uid = "";
+  form.username = "";
   form.password = "";
   form.command = "";
   responseData.value = "";
   showMessage.value = false;
   messageType.value = "";
   message.value = "";
+  loginStatus.value = '未登录';
 };
 
 const responseData = ref('');
@@ -74,7 +93,8 @@ const handleSubmit = () => {
 
   var Url = `${form.ssl}${form.ip}${form.path}`;
   var data = {
-    uid: form.uid,
+    playerId: form.uid,
+    username: form.username,
     password: form.password,
     command: form.command
   };
@@ -84,9 +104,10 @@ const handleSubmit = () => {
     
     responseData.value = JSON.stringify(res.data, null, 2);
 
-    if (res.data.retcode === 200) {
+    if (res.data.retcode === 0) {
       localStorage.setItem('address', form.ssl + form.ip + form.path);
       localStorage.setItem('uid', form.uid);
+      localStorage.setItem('username', form.username);
       localStorage.setItem('password', form.password);
       
       showMessage.value = true;

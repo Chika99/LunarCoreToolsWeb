@@ -78,7 +78,7 @@ const execute = () => {
     Message.info('用户未登录，请重试')
   } else {
     
-    const command = `${value3.value} ${value2.value}`
+    const command = `${value.value}`
     const data = {
       playerId: uid,
       username: username,

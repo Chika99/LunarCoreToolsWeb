@@ -87,6 +87,7 @@ const responseData = ref('');
 
 const messageType = ref<'error' | 'success' | ''>('');
 const message = ref('');
+var Url = `${form.ssl}${form.ip}${form.path}`;
 
 const handleSubmit = () => {
   console.log(form);

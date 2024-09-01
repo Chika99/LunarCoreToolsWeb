@@ -106,7 +106,7 @@ const execute = () => {
     Message.info('用户未登录，请重试')
   } else {
     
-    const command = `/give ${holyrelicnamevalue.value} lv${grade.value} s${modifiedValue}${xct} `
+    const command = `${value.value}`
     const data = {
       playerId: uid,
       username: username,

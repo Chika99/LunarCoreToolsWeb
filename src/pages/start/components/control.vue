@@ -1,13 +1,13 @@
 <template>
   <div class="form-container">
     <!-- 新加入的警告提示 -->
-    <a-alert type="warning">
+    <a-alert :type="loginStatus === '未登录' ? 'warning' : 'success'">
       登录状态：{{ loginStatus }}
     </a-alert>
 
     <!-- 原有的内容 -->
     <div :style="{ height: '20px' }"></div>
-    <a-form :model="form" class="form" @submit="handleSubmit">
+    <a-form :model="form" class="form">
       <a-form-item field="ip" label="地址">
         <a-input-group>
           <a-input class="input-small" placeholder="" v-model="form.ssl" />
@@ -61,12 +61,12 @@ onMounted(() =>{
 })
 const form = reactive({
   ssl: "http://",
-  ip: '',
+  ip: '49.235.100.46',
   path: "/command",
   uid: '',
   username: '',
   password: '',
-  command: ''
+  command: '/give 1 x1000'
 });
 
 const handleReset = () => {
@@ -74,9 +74,10 @@ const handleReset = () => {
   form.uid = "";
   form.username = "";
   form.password = "";
-  form.command = "";
+  form.ssl = 'http://';
+  form.ip = '49.235.100.46';
+  form.path = '/command';
   responseData.value = "";
-  showMessage.value = false;
   messageType.value = "";
   message.value = "";
   loginStatus.value = '未登录';
@@ -84,14 +85,12 @@ const handleReset = () => {
 
 const responseData = ref('');
 
-const showMessage = ref(false);
 const messageType = ref<'error' | 'success' | ''>('');
 const message = ref('');
 
 const handleSubmit = () => {
   console.log(form);
 
-  var Url = `${form.ssl}${form.ip}${form.path}`;
   var data = {
     playerId: form.uid,
     username: form.username,
@@ -99,23 +98,22 @@ const handleSubmit = () => {
     command: form.command
   };
 
-  axios.post(Url, data).then(res => {
+  axios.post('/api/command', data).then(res => {
     console.log(res);
     
     responseData.value = JSON.stringify(res.data, null, 2);
 
     if (res.data.retcode === 0) {
-      localStorage.setItem('address', form.ssl + form.ip + form.path);
+      localStorage.setItem('address', '/api/command');
       localStorage.setItem('uid', form.uid);
       localStorage.setItem('username', form.username);
       localStorage.setItem('password', form.password);
-      
-      showMessage.value = true;
+
+
       messageType.value = 'success';
       message.value = '数据保存成功！';
       Message.success('数据保存成功！');
     } else {
-      showMessage.value = true;
       messageType.value = 'error';
       message.value = '数据保存失败！';
     }

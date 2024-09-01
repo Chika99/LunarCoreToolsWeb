@@ -99,24 +99,20 @@ const handleSubmit = () => {
     command: form.command
   };
 
-  axios.post('/api/command', data).then(res => {
+  axios.post(Url, data).then(res => {
     console.log(res);
     
     responseData.value = JSON.stringify(res.data, null, 2);
 
     if (res.data.retcode === 0) {
-      localStorage.setItem('address', '/api/command');
+      localStorage.setItem('address', Url);
       localStorage.setItem('uid', form.uid);
       localStorage.setItem('username', form.username);
       localStorage.setItem('password', form.password);
 
-
-      messageType.value = 'success';
-      message.value = '数据保存成功！';
-      Message.success('数据保存成功！');
+      Message.success('连接服务器成功！');
     } else {
-      messageType.value = 'error';
-      message.value = '数据保存失败！';
+      Message.error('连接服务器失败，' + res.data.message);
     }
   },
   err => {

@@ -110,6 +110,7 @@ const handleSubmit = () => {
       localStorage.setItem('username', form.username);
       localStorage.setItem('password', form.password);
 
+      loginStatus.value = '已登录，若无法连接服务器可以尝试重置数据';
       Message.success('连接服务器成功！');
     } else {
       Message.error('连接服务器失败，' + res.data.message);
